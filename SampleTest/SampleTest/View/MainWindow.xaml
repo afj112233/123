@@ -1,0 +1,108 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SampleTest.ViewModel"
+        xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="SampleTest.MainWindow"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="500" Width="800">
+    <Window.DataContext>
+        <local:ViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <ContextMenu x:Key="ChildMenu">
+            <MenuItem Header="AAA">
+                <MenuItem Header="AAA1"/>
+                <MenuItem Header="AAA2"/>
+            </MenuItem>
+            <MenuItem Header="BBB"/>
+            <MenuItem Header="CCC">
+                <MenuItem Header="CCC1"/>
+            </MenuItem>
+            <MenuItem Header="DDD"/>
+            <MenuItem Header="EEE"/>
+            <MenuItem Header="FFF"/>
+        </ContextMenu>
+    </Window.Resources>
+    <Border>
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="MouseMove">
+                <i:InvokeCommandAction Command="{Binding MousePosition}"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+        <Viewbox>
+            <Grid Width="800" Height="500">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="6*"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="270"/>
+                    <ColumnDefinition Width="240"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="  Binding Text" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="18" FontFamily="Times New Roman" Width="150"/>
+                <TextBlock Text="  Binding Number" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="18" FontFamily="Times New Roman" Width="150"/>
+                <TextBlock Text="  Binding Control" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="18" FontFamily="Times New Roman" Width="150"/>
+                <TextBlock Text="  Binding Enum" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="18" FontFamily="Times New Roman" Width="150"/>
+                <TextBlock Text="  Binding Converter" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="18" FontFamily="Times New Roman" Width="150"/>
+                <TextBlock Text="  Mouse Position" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="18" FontFamily="Times New Roman" Width="150"/>
+                <TextBox x:Name="BingingText" Text="This is a text" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="18" FontFamily="Times New Roman" Width="100" IsReadOnly="True"/>
+                <TextBox x:Name="BingingNumber" Text="3.142" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="18" FontFamily="Times New Roman" Width="100" IsReadOnly="True"/>
+                <TextBox x:Name="BingingControl" Text="3.142" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="18" FontFamily="Times New Roman" Width="100" IsReadOnly="True"/>
+                <RadioButton Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="Male" Width="100" Height="55" VerticalAlignment="Bottom" FontSize="15" FontFamily="Times New Roman" />
+                <RadioButton Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Content="Female" Width="100" Height="35" VerticalAlignment="Bottom" FontSize="15" FontFamily="Times New Roman"/>
+                <CheckBox x:Name="IsV" Grid.Row="4" Grid.Column="0" Content="IsVisible" FontSize="15" Width="100" HorizontalAlignment="Right" Margin="0,0,24,0" VerticalAlignment="Center" FontFamily="Times New Roman" FlowDirection="RightToLeft" IsChecked="True">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:InvokeCommandAction Command="{Binding Choose1}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </CheckBox>
+                <CheckBox x:Name="Control" Grid.Row="4" Grid.Column="0" Content="Controller" FontSize="15" Width="100" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Times New Roman" Visibility="Hidden">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:InvokeCommandAction Command="{Binding Choose2}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </CheckBox>
+                <TextBlock x:Name="MousePosition" Grid.Row="5" Text="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="18" FontFamily="Times New Roman" Width="100"/>
+                <ListView x:Name="Data1"  Grid.Row="6" Grid.Column="0" Margin="20,30,0,20" Width="105" HorizontalAlignment="Left" ItemsSource="{Binding GetPersonsName}" SelectedIndex="0"/>
+                <ListView x:Name="Data2"  Grid.Row="6" Grid.Column="0" Margin="0,30,20,20" Width="105" HorizontalAlignment="Right" ItemsSource="{Binding GetPersonsName}" SelectedIndex="0">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding Sync}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ListView>
+                <DataGrid x:Name="DataSource" Grid.Column="1" Grid.Row="0" Grid.RowSpan="5" Margin="0,10,0,0" ItemsSource="{Binding GetPersons}"/>
+                <Button x:Name="CmdWithoutP" Grid.Column="1" Grid.Row="5" Height="28" Content="Cmd without parameter" Command="{Binding Tip1}"/>
+                <Button x:Name="CmdWithP" Grid.Column="1" Grid.Row="6" Height="28" Content="Cmd with parameter" VerticalAlignment="Top"  Command="{Binding Tip2}"/>
+                <StackPanel Grid.Column="1" Grid.Row="6" Grid.RowSpan="2" Margin="0,50,0,0">
+                    <TreeView x:Name="Data3" HorizontalAlignment="Right" Width="240" ItemsSource="{Binding GetNames}"></TreeView>
+                    <ComboBox x:Name="Male1" Height="22" ItemsSource="{Binding GetComEng}" SelectedIndex="0"/>
+                    <ComboBox x:Name="Male2" Height="22" ItemsSource="{Binding GetComCh}" SelectedIndex="0"/>
+                </StackPanel>
+                <ListView Grid.Row="0" Grid.Column="2" Grid.RowSpan="6" Margin="10,10,10,20" ScrollViewer.HorizontalScrollBarVisibility="Visible" ItemsSource="{Binding GetPersons}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn x:Name="Data11" Header="Number" Width="130" DisplayMemberBinding="{Binding Number}"/>
+                            <GridViewColumn x:Name="Data12" Header="Name" Width="140" DisplayMemberBinding="{Binding Name}"></GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <ListBox Grid.Row="6" Grid.Column="2" Grid.RowSpan="2" BorderThickness="0"  ContextMenu="{StaticResource ChildMenu}"></ListBox>
+                <Rectangle Grid.Column="2" Grid.Row="6" Grid.RowSpan="2" Stroke="LightPink" StrokeThickness="5" RadiusX="10" RadiusY="5" StrokeDashArray="3"/>
+                <TextBlock Text="Right Click Here" Grid.Column="2" Grid.Row="6" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30" ContextMenu="{StaticResource ChildMenu}"/>
+            </Grid>
+        </Viewbox>
+    </Border>
+</Window>
